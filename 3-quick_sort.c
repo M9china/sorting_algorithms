@@ -38,7 +38,7 @@ int lomuto_partition(int *array, int low, int high, size_t size)
 			}
 		}
 	}
-	if (i + 1 != high)
+	if (array[i + 1] != array[high])
 	{
 		swap(&array[i + 1], &array[high]);
 		print_array(array, size);
@@ -47,8 +47,7 @@ int lomuto_partition(int *array, int low, int high, size_t size)
 }
 
 /**
- * quicksort - Recursive function to sort an
- * array using Quick sort
+ * quicksort - Recursive function to sort an array using Quick sort
  * @array: The array to be sorted
  * @low: The starting index of the array
  * @high: The ending index of the array
@@ -67,8 +66,7 @@ void quicksort(int *array, int low, int high, size_t size)
 }
 
 /**
- * quick_sort - Sort an array of integers
- * using Quick sort algorithm
+ * quick_sort - Sort an array of integers using Quick sort algorithm
  * @array: The array to be sorted
  * @size: Size of the array
  */
