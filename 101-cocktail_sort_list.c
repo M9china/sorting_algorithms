@@ -1,29 +1,57 @@
+#include <stdio.h>
 #include "sort.h"
 
 /**
- * cocktail_sort_list - Sorts a doubly linked list of
- * integers using Cocktail shaker sort
- * @list: Pointer to the head of the list
+ * swap_nodes - Swaps two nodes in a doubly linked list
+ * @node: Node to be swapped
+ * @list: Pointer to the list
+ */
+void swap_nodes(listint_t *node, listint_t **list)
+{
+	if (node->prev)
+		node->prev->next = node->next;
+	else
+		*list = node->next;
+
+	if (node->next)
+		node->next->prev = node->prev;
+
+	node->prev = node->next;
+	node->next = node->prev->next;
+	node->prev->next = node;
+
+	if (node->next)
+		node->next->prev = node;
+
+	if (node->prev->prev == NULL)
+		*list = node;
+}
+
+/**
+ * cocktail_sort_list - Sorts a doubly linked list using
+ * the Cocktail shaker sort algorithm
+ * @list: Pointer to the list
  */
 void cocktail_sort_list(listint_t **list)
 {
-	int swapped = 1;
+	int swapped;
 	listint_t *current;
 
-	if (list == NULL || *list == NULL)
+	if (list == NULL || *list == NULL || (*list)->next == NULL)
 		return;
 
-	while (swapped)
-	{
+	do {
 		swapped = 0;
 		for (current = *list; current->next != NULL; current = current->next)
 		{
 			if (current->n > current->next->n)
 			{
 				swap_nodes(current, list);
+				print_list(*list);
 				swapped = 1;
 			}
 		}
+
 		if (!swapped)
 			break;
 
@@ -32,37 +60,11 @@ void cocktail_sort_list(listint_t **list)
 		{
 			if (current->n < current->prev->n)
 			{
-				swap_nodes(current->prev, list);
+				swap_nodes(current, list);
+				print_list(*list);
 				swapped = 1;
 			}
 		}
-	}
-}
-
-/**
- * swap_nodes - Swaps two adjacent nodes in a doubly linked list
- * @node: Pointer to the first node
- * @list: Pointer to the head of the list
- */
-void swap_nodes(listint_t *node, listint_t **list)
-{
-	listint_t *prev, *next;
-
-	prev = node->prev;
-	next = node->next;
-
-	if (prev)
-		prev->next = next;
-	else
-		*list = next;
-
-	node->prev = next;
-	node->next = next->next;
-
-	next->prev = prev;
-	next->next = node;
-
-	if (node->next)
-		node->next->prev = node;
+	} while (swapped);
 }
 
